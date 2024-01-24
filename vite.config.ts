@@ -4,6 +4,13 @@ import path from "path";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    host: "localhost",
+    port: 8080,
+    proxy: {
+      "/api": "http://api-driver.marsview.cc",
+    },
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),

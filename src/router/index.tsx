@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 import Login from "@/views/Login";
 import NotFound from "@/views/404";
 import Error403 from "@/views/403";
@@ -27,4 +27,7 @@ const routers = [
   },
 ];
 
-export default createBrowserRouter(routers);
+// export default createBrowserRouter(routers);
+export default function Router() {
+  return useRoutes(routers);
+}
