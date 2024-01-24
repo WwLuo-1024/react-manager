@@ -1,7 +1,6 @@
 import axios, { AxiosError } from "axios";
-import { error } from "console";
-import React from "react";
 import { message } from "antd";
+import { hideLoading, showLoading } from "./loading";
 
 //Create Instance
 const instance = axios.create({
@@ -14,6 +13,7 @@ const instance = axios.create({
 //Request Interceptor
 instance.interceptors.request.use(
   (config) => {
+    showLoading();
     const token = localStorage.getItem("token");
     if (token) {
       config.headers.Authorization = "Token::" + token;
@@ -29,18 +29,26 @@ instance.interceptors.request.use(
 );
 
 //Response Interceptor
-instance.interceptors.response.use((response) => {
-  const data = response.data;
-  if (data.code === 500001) {
-    message.error(data.msg);
-    localStorage.removeItem("token");
-    // location.href = "/login";
-  } else if (data.code != 0) {
-    message.error(data.msg);
-    return Promise.reject(data);
+instance.interceptors.response.use(
+  (response) => {
+    const data = response.data;
+    hideLoading();
+    if (data.code === 500001) {
+      message.error(data.msg);
+      localStorage.removeItem("token");
+      // location.href = "/login";
+    } else if (data.code != 0) {
+      message.error(data.msg);
+      return Promise.reject(data);
+    }
+    return data.data;
+  },
+  (err) => {
+    hideLoading();
+    message.error(err.msg);
+    return Promise.reject(err);
   }
-  return data.data;
-});
+);
 
 export default {
   get(url: string, params: any) {
