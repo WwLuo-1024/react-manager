@@ -51,10 +51,10 @@ instance.interceptors.response.use(
 );
 
 export default {
-  get(url: string, params: any) {
+  get<T>(url: string, params: object): Promise<T> {
     return instance.get(url, { params });
   },
-  post(url: string, params: any) {
+  post<T>(url: string, params: object): Promise<T> {
     return instance.post(url, params);
   },
 };
