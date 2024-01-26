@@ -1,3 +1,9 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+/* border box 意为盒尺寸包含padding */
 .welcome {
   font-size: 30px;
   margin-top: 200px;

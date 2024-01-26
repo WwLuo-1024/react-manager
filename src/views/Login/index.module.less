@@ -1,0 +1,30 @@
+.login {
+  height: 100vh;
+  background: url(@/assets/login_bg.jpeg) no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  //   :global(.ant-btn-primary) {
+  //     //1. global保证变量不受影响
+  //     background-color: red;
+  //   }
+}
+
+.title {
+  font-size: 42px;
+  line-height: 1.5;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+//2. 或者不使用global 单独定义
+.loginWrapper {
+  position: absolute;
+  right: 10%;
+  width: 500px;
+  background-color: #fff;
+  top: 50%;
+  transform: translateY(-50%); //-50往上 且transform往上移动自身的50%
+  padding: 50px;
+  border-radius: 10px;
+}
