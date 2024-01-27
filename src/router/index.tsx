@@ -1,7 +1,7 @@
 import { Navigate, useRoutes } from "react-router-dom";
 import Login from "@/views/Login/Login";
-import NotFound from "@/views/404";
-import Error403 from "@/views/403";
+import NotFound from "@/views/ErrorPages/404";
+import Error403 from "@/views/ErrorPages/403";
 import Welcome from "@/views/Welcome";
 import Layout from "@/layout";
 

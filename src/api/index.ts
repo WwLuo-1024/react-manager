@@ -1,8 +1,14 @@
 import request from "@/utils/request";
-import { Login } from "@/types/api";
+import { Login, User } from "@/types/api";
 
 export default {
+  //Login
   login(params: Login.params) {
-    return request.post("/users/login", params, { showLoading: false });
+    return request.post<string>("/users/login", params, { showLoading: false });
+  },
+
+  //Get User Info
+  getUserInfo() {
+    return request.get<User.UserItem>("/users/getUserInfo");
   },
 };

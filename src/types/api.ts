@@ -14,3 +14,21 @@ export namespace Login {
     userPwd: string;
   }
 }
+
+export namespace User {
+  export interface UserItem {
+    createId: number;
+    deptId: string;
+    deptName: string;
+    job: string;
+    mobile: string;
+    role: number;
+    roleList: string;
+    state: number;
+    userEmail: string;
+    userId: number;
+    userImg: string;
+    userName: string;
+    _id: string;
+  }
+}

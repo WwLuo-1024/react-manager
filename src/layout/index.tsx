@@ -1,57 +1,52 @@
 import React, { useEffect } from "react";
-import {
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-} from "@ant-design/icons";
-import { Layout, Menu, Watermark, theme } from "antd";
+import { Layout, Watermark } from "antd";
 import NavHeader from "@/components/NavHeader";
 import NavFooter from "@/components/NavFooter";
 import SideMenu from "@/components/Menu";
+import { Outlet } from "react-router-dom";
+import styles from "./index.module.less";
+import api from "@/api";
+import { useUserStore } from "@/store";
 
-const { Header, Content, Footer, Sider } = Layout;
-const items = [
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-  UserOutlined,
-].map((icon, index) => ({
-  key: String(index + 1),
-  icon: React.createElement(icon),
-  label: `nav ${index + 1}`,
-}));
+const { Header, Content, Sider } = Layout;
 
 const App: React.FC = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
+  // useEffect(() => {
+  //   //水印无法删除的原理（监听节点）
+  //   const targetNode = document.getElementById("content") as HTMLDivElement;
+  //   const config = {
+  //     attributes: true,
+  //     childList: true,
+  //     subtree: true,
+  //   };
+  //   const observer = new MutationObserver(function (mutationList, observer) {
+  //     console.log("发生变化");
+  //     observer.disconnect();
+  //     for (const mutation of mutationList) {
+  //       if (mutation.type === "childList") {
+  //         const span = document.createElement("span");
+  //         span.innerText = "Hello React";
+  //         targetNode.appendChild(span);
+  //         observer.observe(targetNode, config);
+  //       }
+  //     }
+  //   });
+
+  //   observer.observe(targetNode, config);
+  // }, []);
+  const state = useUserStore();
+  const getUserInfo = async () => {
+    const data = await api.getUserInfo();
+    // store.updateUserInfo(data);
+    state.updateUserInfo(data);
+  };
 
   useEffect(() => {
-    //水印无法删除的原理（监听节点）
-    const targetNode = document.getElementById("content") as HTMLDivElement;
-    const config = {
-      attributes: true,
-      childList: true,
-      subtree: true,
-    };
-    const observer = new MutationObserver(function (mutationList, observer) {
-      console.log("发生变化");
-      observer.disconnect();
-      for (const mutation of mutationList) {
-        if (mutation.type === "childList") {
-          const span = document.createElement("span");
-          span.innerText = "Hello React";
-          targetNode.appendChild(span);
-          observer.observe(targetNode, config);
-        }
-      }
-    });
-
-    observer.observe(targetNode, config);
+    getUserInfo();
   }, []);
 
   return (
-    <Watermark content={"React"}>
+    <Watermark content={state.userInfo.userName}>
       <Layout>
         <Sider
         //   breakpoint="lg"
@@ -66,27 +61,17 @@ const App: React.FC = () => {
           <SideMenu />
         </Sider>
         <Layout>
-          <Header
-            style={{ padding: 0, height: 50, background: colorBgContainer }}
-          >
+          <Header style={{ padding: 0, height: 50 }}>
             <NavHeader />
           </Header>
-          <Content style={{ margin: "24px 16px 0" }}>
-            <div
-              id="content"
-              style={{
-                padding: 24,
-                minHeight: 360,
-                background: colorBgContainer,
-                borderRadius: borderRadiusLG,
-              }}
-            >
-              <span>content</span>
+          <Content className={styles.content}>
+            <div className={styles.wrapper}>
+              <Outlet />
             </div>
-          </Content>
-          <Footer style={{ textAlign: "center" }}>
             <NavFooter />
-          </Footer>
+          </Content>
+          {/* <Footer style={{ textAlign: "center" }}>     
+          </Footer> */}
         </Layout>
       </Layout>
     </Watermark>

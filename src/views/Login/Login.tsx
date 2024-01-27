@@ -6,6 +6,8 @@ import styles from "./index.module.less";
 import api from "@/api";
 import { Login } from "@/types/api";
 import storage from "@/utils/storage";
+import { useUserStore } from "@/store";
+// import { store } from "@/store";
 
 type FieldType = {
   userName?: string;
@@ -30,20 +32,26 @@ const LoginFC: FC = () => {
   // }, []);
 
   const [isLoading, setIsLoading] = useState(false);
+  const updateToken = useUserStore((state) => state.updateToken);
   const onFinish = async (values: Login.params) => {
-    setIsLoading(true);
-    const data = await api.login(values).finally(() => {
+    try {
+      setIsLoading(true);
+      const data = await api.login(values);
+
+      storage.set("token", data);
+      // store.token = data;
+      updateToken(data);
+      message.success("Login Success");
+      {
+        /*It is used to save previous link before user log out */
+      }
+      const params = new URLSearchParams(location.search);
+      setTimeout(() => {
+        location.href = params.get("callback") || "/welcome";
+      });
+    } catch (error) {
       setIsLoading(false);
-    });
-
-    storage.set("token", data);
-    message.success("Login Success");
-
-    {
-      /*It is used to save previous link before user log out */
     }
-    const params = new URLSearchParams(location.search);
-    params.get("callback") || "welcome";
   };
 
   return (

@@ -25,9 +25,9 @@ instance.interceptors.request.use(
   (config) => {
     if (config.showLoading) showLoading();
 
-    const token = localStorage.getItem("token");
+    const token = storage.get("token");
     if (token) {
-      config.headers.Authorization = "Token::" + token;
+      config.headers.Authorization = "Bearer " + token;
     }
 
     if (import.meta.env.VITE_MOCK === "true") {
@@ -77,14 +77,14 @@ interface IConfig {
 export default {
   get<T>(
     url: string,
-    params: object,
+    params?: object,
     options: IConfig = { showLoading: true, showError: true }
   ): Promise<T> {
     return instance.get(url, { params, ...options });
   },
   post<T>(
     url: string,
-    params: object,
+    params?: object,
     options: IConfig = { showLoading: true, showError: true }
   ): Promise<T> {
     return instance.post(url, params, options);

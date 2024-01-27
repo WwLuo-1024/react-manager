@@ -2,8 +2,11 @@ import { MenuFoldOutlined } from "@ant-design/icons";
 import { Breadcrumb, Dropdown, MenuProps, Switch } from "antd";
 import React, { FC } from "react";
 import styles from "./index.module.less";
+import { useUserStore } from "@/store";
+import storage from "@/utils/storage";
 
 const NavHeader: FC = () => {
+  const userInfo = useUserStore((state) => state.userInfo);
   const breadList = [
     {
       title: "Main",
@@ -15,14 +18,21 @@ const NavHeader: FC = () => {
 
   const items: MenuProps["items"] = [
     {
-      key: "1",
-      label: "Email: Jackma@mars.com",
+      key: "email",
+      label: `Email: ${userInfo.userEmail}`,
     },
     {
-      key: "2",
+      key: "logout",
       label: "Logout",
     },
   ];
+
+  const onClick: MenuProps["onClick"] = ({ key }) => {
+    if (key === "logout") {
+      storage.remove("token");
+    }
+    location.href = "/login?callback=" + encodeURIComponent(location.href);
+  };
 
   return (
     <div className={styles.naviHeader}>
@@ -36,8 +46,8 @@ const NavHeader: FC = () => {
           unCheckedChildren="Default"
           style={{ marginRight: 10 }}
         />
-        <Dropdown menu={{ items }}>
-          <span className={styles.nickName}>JackMa</span>
+        <Dropdown menu={{ items, onClick }}>
+          <span className={styles.nickName}>{userInfo.userName}</span>
         </Dropdown>
       </div>
     </div>
