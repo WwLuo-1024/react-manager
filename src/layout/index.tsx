@@ -7,9 +7,9 @@ import {
 import { Layout, Menu, Watermark, theme } from "antd";
 import NavHeader from "@/components/NavHeader";
 import NavFooter from "@/components/NavFooter";
+import SideMenu from "@/components/Menu";
 
 const { Header, Content, Footer, Sider } = Layout;
-
 const items = [
   UserOutlined,
   VideoCameraOutlined,
@@ -63,14 +63,7 @@ const App: React.FC = () => {
         //     console.log(collapsed, type);
         //   }}
         >
-          {/* <div className="demo-logo-vertical" />
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={["4"]}
-          items={items}
-        /> */}
-          Slider
+          <SideMenu />
         </Sider>
         <Layout>
           <Header

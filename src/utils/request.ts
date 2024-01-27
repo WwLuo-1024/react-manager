@@ -15,6 +15,9 @@ const instance = axios.create({
   timeout: 8000, //8s
   timeoutErrorMessage: "Request timed out, please try again later",
   withCredentials: true, //跨域
+  headers: {
+    icode: "1B5DBB45B7F14CDB",
+  },
 });
 
 //Request Interceptor
@@ -26,7 +29,7 @@ instance.interceptors.request.use(
     if (token) {
       config.headers.Authorization = "Token::" + token;
     }
-    config.headers.icode = "1B5DBB45B7F14CDB";
+
     if (import.meta.env.VITE_MOCK === "true") {
       // config.baseURL = import.meta.env.VITE_MOCK_API;
       config.baseURL = env.mockApi;

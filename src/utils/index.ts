@@ -8,7 +8,7 @@ export const formatMoney = (num: number | string) => {
 };
 
 //format Date
-export const toLocalDate = (date?: Date, rule?: string) => {
+export const formatDate = (date?: Date, rule?: string) => {
   let curDate = new Date();
 
   if (date) curDate = date;
