@@ -3,15 +3,26 @@ import Login from "@/views/Login/Login";
 import NotFound from "@/views/404";
 import Error403 from "@/views/403";
 import Welcome from "@/views/Welcome";
+import Layout from "@/layout";
 
 const routers = [
   {
     path: "/",
-    element: <Welcome />,
+    element: <Navigate to="/welcome" />,
   },
   {
     path: "/login",
     element: <Login />,
+  },
+  {
+    // path: '/Layout',
+    element: <Layout />,
+    children: [
+      {
+        path: "/welcome",
+        element: <Welcome />,
+      },
+    ],
   },
   {
     path: "*",
