@@ -32,3 +32,12 @@ export namespace User {
     _id: string;
   }
 }
+
+export namespace Dashboard {
+  export interface ReportData {
+    driverCount: number;
+    totalMoney: number;
+    orderCount: number;
+    cityNum: number;
+  }
+}

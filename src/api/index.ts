@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { Login, User } from "@/types/api";
+import { Dashboard, Login, User } from "@/types/api";
 
 export default {
   //Login
@@ -10,5 +10,10 @@ export default {
   //Get User Info
   getUserInfo() {
     return request.get<User.UserItem>("/users/getUserInfo");
+  },
+
+  //Get Dashboard Data
+  getReportData() {
+    return request.get<Dashboard.ReportData>("/order/dashboard/getReportData");
   },
 };

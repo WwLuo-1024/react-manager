@@ -55,7 +55,7 @@ instance.interceptors.response.use(
       message.error(data.msg);
 
       storage.remove("token");
-      // location.href = "/login";
+      location.href = "/login?callback=" + encodeURIComponent(location.href);
     } else if (data.code != 0) {
       message.error(data.msg);
       return Promise.reject(data);

@@ -1,14 +1,27 @@
 import { Button, Card, Descriptions } from "antd";
-import React, { FC, useEffect } from "react";
+import React, { FC, useEffect, useState } from "react";
 import styles from "./index.module.less";
 import * as echarts from "echarts";
+import { useUserStore } from "@/store";
+import { formatMoney, formatNum, formatState } from "@/utils";
+import api from "@/api";
+import { Dashboard } from "@/types/api";
+import { useCharts } from "@/hook/useCharts";
 
 const DashBoard: FC = () => {
+  const userInfo = useUserStore((state) => state.userInfo);
+  const [report, setReport] = useState<Dashboard.ReportData>();
+
+  const [lineRef, lineChart] = useCharts();
+  const [pieCityRef, pieCityChart] = useCharts();
+  const [pieAgeRef, pieAgeChart] = useCharts();
+  const [radarRef, radarChart] = useCharts();
+
   useEffect(() => {
     //创建线图
-    const lineChartDom = document.getElementById("lineChart");
-    const chartInstance = echarts.init(lineChartDom as HTMLElement);
-    chartInstance.setOption({
+    // const lineChartDom = document.getElementById("lineChart");
+    // const chartInstance = echarts.init(lineChartDom as HTMLElement);
+    lineChart?.setOption({
       //   title: {
       //     text: "订单和流水走势图",
       //   },
@@ -78,9 +91,9 @@ const DashBoard: FC = () => {
     });
 
     //创建饼图(城市)
-    const pieChartCityDom = document.getElementById("pieChartCity");
-    const pieChartCityInstance = echarts.init(pieChartCityDom as HTMLElement);
-    pieChartCityInstance.setOption({
+    // const pieChartCityDom = document.getElementById("pieChartCity");
+    // const pieChartCityInstance = echarts.init(pieChartCityDom as HTMLElement);
+    pieCityChart?.setOption({
       title: {
         text: "司机城市分布",
         left: "center",
@@ -109,9 +122,9 @@ const DashBoard: FC = () => {
     });
 
     //创建饼图(年龄)
-    const pieChartAgeDom = document.getElementById("pieChartAge");
-    const pieChartAgeInstance = echarts.init(pieChartAgeDom as HTMLElement);
-    pieChartAgeInstance.setOption({
+    // const pieChartAgeDom = document.getElementById("pieChartAge");
+    // const pieChartAgeInstance = echarts.init(pieChartAgeDom as HTMLElement);
+    pieAgeChart?.setOption({
       title: {
         text: "司机年龄分布",
         left: "center",
@@ -141,9 +154,9 @@ const DashBoard: FC = () => {
     });
 
     //创建雷达图
-    const radarChartDom = document.getElementById("radarChart");
-    const radarChartInstance = echarts.init(radarChartDom as HTMLElement);
-    radarChartInstance.setOption({
+    // const radarChartDom = document.getElementById("radarChart");
+    // const radarChartInstance = echarts.init(radarChartDom as HTMLElement);
+    radarChart?.setOption({
       //   title: {
       //     text: "司机模型诊断",
       //     left: "center",
@@ -173,6 +186,15 @@ const DashBoard: FC = () => {
         },
       ],
     });
+  }, [lineChart, pieAgeChart, pieCityChart, radarChart]);
+
+  const getReportData = async () => {
+    const data = await api.getReportData();
+    setReport(data);
+  };
+
+  useEffect(() => {
+    getReportData();
   }, []);
 
   return (
@@ -180,34 +202,44 @@ const DashBoard: FC = () => {
       <div className={styles.userInfo}>
         <img
           className={styles.userAvatar}
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-          alt=""
+          src={userInfo.userImg}
+          alt={"User Avatar"}
         />
         <Descriptions title="User Info">
-          <Descriptions.Item label="User Id">100001</Descriptions.Item>
-          <Descriptions.Item label="Email">test@mars.com</Descriptions.Item>
-          <Descriptions.Item label="State">On-the-job</Descriptions.Item>
-          <Descriptions.Item label="Telephone">17600001111</Descriptions.Item>
-          <Descriptions.Item label="Role">Frontend Developer</Descriptions.Item>
-          <Descriptions.Item label="Department">Product</Descriptions.Item>
+          <Descriptions.Item label="用户ID">
+            {userInfo.userId}
+          </Descriptions.Item>
+          <Descriptions.Item label="邮箱">
+            {userInfo.userEmail}
+          </Descriptions.Item>
+          <Descriptions.Item label="状态">
+            {formatState(userInfo.state)}
+          </Descriptions.Item>
+          <Descriptions.Item label="手机号">
+            {userInfo.mobile}
+          </Descriptions.Item>
+          <Descriptions.Item label="岗位">{userInfo.job}</Descriptions.Item>
+          <Descriptions.Item label="部门">
+            {userInfo.deptName}
+          </Descriptions.Item>
         </Descriptions>
       </div>
       <div className={styles.report}>
         <div className={styles.card}>
           <div className="title">司机数量</div>
-          <div className={styles.data}>100个</div>
+          <div className={styles.data}>{formatNum(report?.driverCount)}个</div>
         </div>
         <div className={styles.card}>
           <div className="title">总流水</div>
-          <div className={styles.data}>10000元</div>
+          <div className={styles.data}>{formatMoney(report?.totalMoney)}元</div>
         </div>
         <div className={styles.card}>
           <div className="title">总订单</div>
-          <div className={styles.data}>2000单</div>
+          <div className={styles.data}>{formatNum(report?.orderCount)}单</div>
         </div>
         <div className={styles.card}>
           <div className="title">开通城市</div>
-          <div className={styles.data}>50座</div>
+          <div className={styles.data}>{formatNum(report?.cityNum)}座</div>
         </div>
       </div>
 
@@ -216,22 +248,34 @@ const DashBoard: FC = () => {
           title="订单和流水走势图"
           extra={<Button type="primary"> 刷新</Button>}
         >
-          <div id="lineChart" className={styles.itemChart}></div>
+          <div id="lineChart" ref={lineRef} className={styles.itemChart}></div>
         </Card>
       </div>
 
       <div className={styles.chart}>
         <Card title="司机分布" extra={<Button type="primary"> 刷新</Button>}>
           <div className={styles.pieChart}>
-            <div id="pieChartCity" className={styles.itemPie}></div>
-            <div id="pieChartAge" className={styles.itemPie}></div>
+            <div
+              id="pieChartCity"
+              ref={pieCityRef}
+              className={styles.itemPie}
+            ></div>
+            <div
+              id="pieChartAge"
+              ref={pieAgeRef}
+              className={styles.itemPie}
+            ></div>
           </div>
         </Card>
       </div>
 
       <div className={styles.chart}>
         <Card title="模型诊断" extra={<Button type="primary"> 刷新</Button>}>
-          <div id="radarChart" className={styles.itemChart}></div>
+          <div
+            id="radarChart"
+            ref={radarRef}
+            className={styles.itemChart}
+          ></div>
         </Card>
       </div>
     </div>

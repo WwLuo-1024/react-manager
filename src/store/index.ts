@@ -16,10 +16,7 @@ import { create } from "zustand";
 
 export const useUserStore = create<{
   token: string;
-  userInfo: {
-    userEmail: string;
-    userName: string;
-  };
+  userInfo: User.UserItem;
   collapsed: boolean;
   updateToken: (token: string) => void;
   updateUserInfo: (userInfo: User.UserItem) => void;
@@ -27,8 +24,19 @@ export const useUserStore = create<{
 }>((set) => ({
   token: "",
   userInfo: {
+    createId: 0,
+    deptId: "",
+    deptName: "",
+    job: "",
+    mobile: "",
+    role: 0,
+    roleList: "",
+    state: 0,
     userEmail: "",
+    userId: 0,
+    userImg: "",
     userName: "",
+    _id: "",
   },
   collapsed: false,
   updateToken: (token: string) => set({ token }),
