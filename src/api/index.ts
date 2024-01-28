@@ -16,4 +16,20 @@ export default {
   getReportData() {
     return request.get<Dashboard.ReportData>("/order/dashboard/getReportData");
   },
+
+  getLineData() {
+    return request.get<Dashboard.LineData>("/order/dashboard/getLineData");
+  },
+
+  getPieCityData() {
+    return request.get<Dashboard.PieData[]>("/order/dashboard/getPieCityData");
+  },
+
+  getPieAgeData() {
+    return request.get<Dashboard.PieData[]>("/order/dashboard/getPieAgeData");
+  },
+
+  getRadarData() {
+    return request.get<Dashboard.RadarData>("/order/dashboard/getRadarData");
+  },
 };
