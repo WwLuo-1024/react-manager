@@ -7,8 +7,12 @@ import { Menu } from "antd";
 import React, { FC } from "react";
 import styles from "./index.module.less";
 import { useNavigate } from "react-router-dom";
+import { useUserStore } from "@/store";
 
 const SideMenu: FC = () => {
+  const navigate = useNavigate();
+  const collapsed = useUserStore((state) => state.collapsed);
+
   const items = [
     {
       label: "工作台",
@@ -28,7 +32,7 @@ const SideMenu: FC = () => {
       ],
     },
   ];
-  const navigate = useNavigate();
+
   function handleClickLogo() {
     navigate("/welcome");
   }
@@ -37,7 +41,7 @@ const SideMenu: FC = () => {
     <div>
       <div className={styles.logo} onClick={handleClickLogo}>
         <img className={styles.img} src="/imgs/logo.png" />
-        <span>慕慕货运</span>
+        {collapsed ? "" : <span>慕慕货运</span>}
       </div>
       <Menu
         defaultSelectedKeys={["1"]}
@@ -45,6 +49,7 @@ const SideMenu: FC = () => {
         mode="inline"
         theme="dark"
         items={items}
+        style={{ width: collapsed ? 80 : "auto" }}
       />
     </div>
   );

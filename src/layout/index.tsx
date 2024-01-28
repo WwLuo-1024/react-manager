@@ -34,11 +34,12 @@ const App: React.FC = () => {
 
   //   observer.observe(targetNode, config);
   // }, []);
-  const state = useUserStore();
+  const { userInfo, collapsed, updateUserInfo } = useUserStore();
+
   const getUserInfo = async () => {
     const data = await api.getUserInfo();
     // store.updateUserInfo(data);
-    state.updateUserInfo(data);
+    updateUserInfo(data);
   };
 
   useEffect(() => {
@@ -46,17 +47,18 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <Watermark content={state.userInfo.userName}>
+    <Watermark content={userInfo.userName}>
       <Layout>
         <Sider
-        //   breakpoint="lg"
-        //   collapsedWidth="0"
-        //   onBreakpoint={(broken) => {
-        //     console.log(broken);
-        //   }}
-        //   onCollapse={(collapsed, type) => {
-        //     console.log(collapsed, type);
-        //   }}
+          //   breakpoint="lg"
+          //   collapsedWidth="0"
+          //   onBreakpoint={(broken) => {
+          //     console.log(broken);
+          //   }}
+          //   onCollapse={(collapsed, type) => {
+          //     console.log(collapsed, type);
+          //   }}
+          collapsed={collapsed}
         >
           <SideMenu />
         </Sider>

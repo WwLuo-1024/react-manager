@@ -1,4 +1,4 @@
-import { MenuFoldOutlined } from "@ant-design/icons";
+import { MenuFoldOutlined, MenuUnfoldOutlined } from "@ant-design/icons";
 import { Breadcrumb, Dropdown, MenuProps, Switch } from "antd";
 import React, { FC } from "react";
 import styles from "./index.module.less";
@@ -6,7 +6,7 @@ import { useUserStore } from "@/store";
 import storage from "@/utils/storage";
 
 const NavHeader: FC = () => {
-  const userInfo = useUserStore((state) => state.userInfo);
+  const { userInfo, collapsed, updateCollapsed } = useUserStore();
   const breadList = [
     {
       title: "Main",
@@ -34,10 +34,18 @@ const NavHeader: FC = () => {
     location.href = "/login?callback=" + encodeURIComponent(location.href);
   };
 
+  //To control icon of menu switch
+  const toggleCollapsed = () => {
+    updateCollapsed();
+  };
+
   return (
     <div className={styles.naviHeader}>
       <div className={styles.left}>
-        <MenuFoldOutlined />
+        <div onClick={toggleCollapsed}>
+          {collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />}
+        </div>
+
         <Breadcrumb items={breadList} style={{ marginLeft: 10 }} />
       </div>
       <div className="right">

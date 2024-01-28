@@ -20,14 +20,17 @@ export const useUserStore = create<{
     userEmail: string;
     userName: string;
   };
+  collapsed: boolean;
   updateToken: (token: string) => void;
   updateUserInfo: (userInfo: User.UserItem) => void;
+  updateCollapsed: () => void;
 }>((set) => ({
   token: "",
   userInfo: {
     userEmail: "",
     userName: "",
   },
+  collapsed: false,
   updateToken: (token: string) => set({ token }),
   updateUserInfo: (userInfo: User.UserItem) => set({ userInfo }),
   //   updateUserInfo(userInfo: User.UserItem) {
@@ -35,4 +38,10 @@ export const useUserStore = create<{
   //       userInfo,
   //     });
   //   },
+  updateCollapsed: () =>
+    set((state) => {
+      return {
+        collapsed: !state.collapsed,
+      };
+    }),
 }));
