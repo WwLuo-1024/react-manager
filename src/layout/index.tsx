@@ -8,7 +8,7 @@ import styles from "./index.module.less";
 import api from "@/api";
 import { useUserStore } from "@/store";
 
-const { Header, Content, Sider } = Layout;
+const { Header, Sider } = Layout;
 
 const App: React.FC = () => {
   // useEffect(() => {
@@ -66,12 +66,12 @@ const App: React.FC = () => {
           <Header style={{ padding: 0, height: 50 }}>
             <NavHeader />
           </Header>
-          <Content className={styles.content}>
-            <div className={styles.wrapper}>
-              <Outlet />
-            </div>
-            <NavFooter />
-          </Content>
+          {/* <Content className={styles.content}> */}
+          <div className={styles.wrapper}>
+            <Outlet />
+          </div>
+          <NavFooter />
+          {/* </Content> */}
           {/* <Footer style={{ textAlign: "center" }}>     
           </Footer> */}
         </Layout>
