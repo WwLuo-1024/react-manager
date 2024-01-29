@@ -3,8 +3,9 @@ import { PageParams, User } from "@/types/api";
 import { formatDate } from "@/utils";
 import { Button, Form, Input, Select, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import CreateUser from "./CreateUser";
+import { IAction } from "@/types/modal";
 
 const UserList: FC = () => {
   const [form] = Form.useForm();
@@ -14,6 +15,10 @@ const UserList: FC = () => {
     current: 1,
     pageSize: 10,
   });
+  const userRef = useRef<{
+    open: (type: IAction, data?: User.UserItem) => void | undefined;
+  }>();
+
   //获取用户列表
   const getUserList = async (params: PageParams) => {
     const values = form.getFieldsValue();
@@ -55,6 +60,11 @@ const UserList: FC = () => {
   //重置表单
   const handleReset = () => {
     form.resetFields();
+  };
+
+  //创建用户
+  const handleCreate = () => {
+    userRef.current?.open("create");
   };
 
   const columns: ColumnsType<User.UserItem> = [
@@ -169,7 +179,9 @@ const UserList: FC = () => {
         <div className="header-wrapper">
           <div className="title">用户列表</div>
           <div className="action">
-            <Button type="primary">新增</Button>
+            <Button type="primary" onClick={handleCreate}>
+              新增
+            </Button>
             <Button type="primary" danger>
               批量删除
             </Button>
@@ -196,10 +208,17 @@ const UserList: FC = () => {
             },
           }}
         />
-        ;
       </div>
 
-      <CreateUser />
+      <CreateUser
+        mRef={userRef}
+        update={() => {
+          getUserList({
+            pageNum: 1,
+            pageSize: pagination.pageSize,
+          });
+        }}
+      />
     </div>
   );
 };

@@ -3,23 +3,52 @@ import storage from "@/utils/storage";
 import { LoadingOutlined, PlusOutlined } from "@ant-design/icons";
 import { Form, Input, Modal, Select, Upload } from "antd";
 import { RcFile, UploadProps, UploadFile } from "antd/es/upload";
-import React, { FC, useState } from "react";
+import React, { FC, useImperativeHandle, useState } from "react";
 import type { UploadChangeParam } from "antd/es/upload";
+import { IAction, IModalProp } from "@/types/modal";
+import { User } from "@/types/api";
+import api from "@/api";
 
-const CreateUser: FC = () => {
+const CreateUser: FC<IModalProp> = (props: IModalProp) => {
   const [form] = Form.useForm();
   const [img, setImage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [visable, setVisable] = useState(false);
+  const [action, setAction] = useState<IAction>("create");
+
+  //调用弹框显示方法
+  const open = (type: IAction, data?: User.UserItem) => {
+    setVisable(true);
+    setAction(type);
+  };
+
+  //暴露子组件open方法
+  useImperativeHandle(props.mRef, () => {
+    return {
+      open,
+    };
+  });
 
   const handleSubmit = async () => {
     try {
       const valid = await form.validateFields();
-      console.log("===>", valid);
+      if (valid) {
+        const params = { ...form.getFieldsValue(), userImg: img };
+        if (action === "create") {
+          const data = await api.createUser(params);
+          message.success("创建成功");
+          handleCancel();
+          props.update();
+        }
+      }
     } catch (error) {
       console.log("-===>", error);
     }
   };
-  const handleCancel = () => {};
+  const handleCancel = () => {
+    setVisable(false);
+    form.resetFields();
+  };
 
   //上传前 接口处理
   const beforeUpload = (file: RcFile) => {
@@ -60,7 +89,7 @@ const CreateUser: FC = () => {
     <Modal
       title="创建用户"
       width={800}
-      open={true}
+      open={visable}
       onOk={handleSubmit}
       onCancel={handleCancel}
       okText={"确定"}
@@ -125,7 +154,7 @@ const CreateUser: FC = () => {
             onChange={handleChange}
           >
             {img ? (
-              <img src={img} style={{ width: "100%" }} />
+              <img src={img} style={{ width: "100%", borderRadius: "100%" }} />
             ) : (
               <div>
                 {loading ? <LoadingOutlined /> : <PlusOutlined />}
