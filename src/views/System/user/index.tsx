@@ -4,6 +4,7 @@ import { formatDate } from "@/utils";
 import { Button, Form, Input, Select, Space, Table } from "antd";
 import { ColumnsType } from "antd/es/table";
 import React, { FC, useEffect, useState } from "react";
+import CreateUser from "./CreateUser";
 
 const UserList: FC = () => {
   const [form] = Form.useForm();
@@ -30,7 +31,7 @@ const UserList: FC = () => {
         return item;
       });
     setData(list);
-    setTotal(data.page.total);
+    setTotal(list.length);
     setPagination({
       current: data.page.pageNum,
       pageSize: data.page.pageSize,
@@ -39,16 +40,21 @@ const UserList: FC = () => {
 
   useEffect(() => {
     getUserList({
-      pageNum: 1,
+      pageNum: pagination.current,
       pageSize: pagination.pageSize,
     });
-  }, []);
+  }, [pagination.current, pagination.pageSize]);
 
   const handleSearch = () => {
     getUserList({
       pageNum: 1,
       pageSize: pagination.pageSize,
     });
+  };
+
+  //重置表单
+  const handleReset = () => {
+    form.resetFields();
   };
 
   const columns: ColumnsType<User.UserItem> = [
@@ -144,8 +150,8 @@ const UserList: FC = () => {
           <Select style={{ width: 120 }} defaultValue={0}>
             <Select.Option value={0}>所有</Select.Option>
             <Select.Option value={1}>在职</Select.Option>
-            <Select.Option value={2}>试用期</Select.Option>
-            <Select.Option value={3}>离职</Select.Option>
+            <Select.Option value={2}>离职</Select.Option>
+            <Select.Option value={3}>试用期</Select.Option>
           </Select>
         </Form.Item>
         <Form.Item>
@@ -153,7 +159,9 @@ const UserList: FC = () => {
             <Button type="primary" onClick={handleSearch}>
               搜素
             </Button>
-            <Button type="default">重置</Button>
+            <Button type="default" onClick={handleReset}>
+              重置
+            </Button>
           </Space>
         </Form.Item>
       </Form>
@@ -180,10 +188,18 @@ const UserList: FC = () => {
             total,
             showQuickJumper: true,
             showSizeChanger: true,
+            onChange: (page, pageSize) => {
+              setPagination({
+                current: page,
+                pageSize,
+              });
+            },
           }}
         />
         ;
       </div>
+
+      <CreateUser />
     </div>
   );
 };
