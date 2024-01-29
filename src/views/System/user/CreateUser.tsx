@@ -8,6 +8,7 @@ import type { UploadChangeParam } from "antd/es/upload";
 import { IAction, IModalProp } from "@/types/modal";
 import { User } from "@/types/api";
 import api from "@/api";
+import FormItem from "antd/es/form/FormItem";
 
 const CreateUser: FC<IModalProp> = (props: IModalProp) => {
   const [form] = Form.useForm();
@@ -20,6 +21,10 @@ const CreateUser: FC<IModalProp> = (props: IModalProp) => {
   const open = (type: IAction, data?: User.UserItem) => {
     setVisable(true);
     setAction(type);
+    if (type === "edit" && data) {
+      form.setFieldsValue(data);
+      setImage(data.userImg);
+    }
   };
 
   //暴露子组件open方法
@@ -34,12 +39,18 @@ const CreateUser: FC<IModalProp> = (props: IModalProp) => {
       const valid = await form.validateFields();
       if (valid) {
         const params = { ...form.getFieldsValue(), userImg: img };
+        console.log("edit data ===> ", params);
         if (action === "create") {
-          const data = await api.createUser(params);
+          await api.createUser(params);
           message.success("创建成功");
           handleCancel();
           props.update();
+        } else {
+          await api.editUser(params);
+          message.success("修改成功");
         }
+        handleCancel();
+        props.update();
       }
     } catch (error) {
       console.log("-===>", error);
@@ -97,6 +108,10 @@ const CreateUser: FC<IModalProp> = (props: IModalProp) => {
     >
       {/* labelCol占位四列 labelAlign居右*/}
       <Form form={form} labelCol={{ span: 4 }} labelAlign="right">
+        {/* 隐藏域存储用户id, 因为父组件param会传参过来保存到Form中以便获取 */}
+        <FormItem name="userId" hidden>
+          <Input />
+        </FormItem>
         <Form.Item
           label="用户名称"
           name="userName"
@@ -120,7 +135,7 @@ const CreateUser: FC<IModalProp> = (props: IModalProp) => {
         <Form.Item
           label="部门"
           name="deptId"
-          rules={[{ required: true, message: "请输入部门" }]}
+          //   rules={[{ required: true, message: "请输入部门" }]}
         >
           <Input placeholder="请输入部门"></Input>
         </Form.Item>

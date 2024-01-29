@@ -41,4 +41,9 @@ export default {
   createUser(params: User.CreateParams) {
     return request.post("/users/create", params);
   },
+
+  //编辑用户
+  editUser(params: User.EditParams) {
+    return request.post("/users/edit", params);
+  },
 };

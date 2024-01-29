@@ -28,15 +28,18 @@ const UserList: FC = () => {
       pageNum: params.pageNum,
       pageSize: params.pageSize,
     });
-    const list = Array.from({ length: 50 })
-      .fill({})
-      .map((item: any) => {
-        item = { ...data.list[0] };
-        item.userId = Math.random();
-        return item;
-      });
-    setData(list);
-    setTotal(list.length);
+
+    //模拟数据 Mock Data
+    // const list = Array.from({ length: 50 })
+    //   .fill({})
+    //   .map((item: any) => {
+    //     item = { ...data.list[0] };
+    //     item.userId = Math.random();
+    //     return item;
+    //   });
+
+    setData(data.list);
+    setTotal(data.list.length);
     setPagination({
       current: data.page.pageNum,
       pageSize: data.page.pageSize,
@@ -65,6 +68,11 @@ const UserList: FC = () => {
   //创建用户
   const handleCreate = () => {
     userRef.current?.open("create");
+  };
+
+  //编辑用户
+  const handleEdit = (record: User.UserItem) => {
+    userRef.current?.open("edit", record);
   };
 
   const columns: ColumnsType<User.UserItem> = [
@@ -133,12 +141,15 @@ const UserList: FC = () => {
     },
     {
       title: "操作",
-      dataIndex: "operation",
+      // dataIndex: "operation",
       key: "operation",
-      render() {
+      //val: 列的值 (前提要有dataIndex) record: 行的值
+      render(record) {
         return (
           <Space>
-            <Button type="text">编辑</Button>
+            <Button type="text" onClick={() => handleEdit(record)}>
+              编辑
+            </Button>
             <Button type="text" danger>
               删除
             </Button>
@@ -147,6 +158,7 @@ const UserList: FC = () => {
       },
     },
   ];
+
   return (
     <div className="user-list">
       <Form form={form} className="search-form" layout="inline">
