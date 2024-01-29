@@ -5,6 +5,7 @@ import Error403 from "@/views/ErrorPages/403";
 import Welcome from "@/views/Welcome";
 import Layout from "@/layout";
 import DashBoard from "@/views/Dashboard";
+import UserList from "@/views/System/user";
 
 const routers = [
   {
@@ -26,6 +27,10 @@ const routers = [
       {
         path: "/dashboard",
         element: <DashBoard />,
+      },
+      {
+        path: "/userlist",
+        element: <UserList />,
       },
     ],
   },

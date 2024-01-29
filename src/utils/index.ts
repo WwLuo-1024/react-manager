@@ -17,10 +17,12 @@ export const formatNum = (num?: number | string) => {
 };
 
 //format Date
-export const formatDate = (date?: Date, rule?: string) => {
+export const formatDate = (date?: Date | string, rule?: string) => {
   let curDate = new Date();
 
-  if (date) curDate = date;
+  if (date instanceof Date) curDate = date;
+  else if (date) curDate = new Date(date);
+
   if (rule === "yyyy-MM-dd") return curDate.toLocaleDateString();
   if (rule === "HH:mm:sss") return curDate.toLocaleTimeString();
 

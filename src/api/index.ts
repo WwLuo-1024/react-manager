@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { Dashboard, Login, User } from "@/types/api";
+import { Dashboard, Login, ResultData, User } from "@/types/api";
 
 export default {
   //Login
@@ -31,5 +31,9 @@ export default {
 
   getRadarData() {
     return request.get<Dashboard.RadarData>("/order/dashboard/getRadarData");
+  },
+
+  getUserList(params: User.Params) {
+    return request.get<ResultData<User.UserItem>>("/users/list", params);
   },
 };

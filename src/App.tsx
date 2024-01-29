@@ -1,4 +1,4 @@
-import "./App.css";
+import "./App.less";
 import { BrowserRouter } from "react-router-dom";
 // import router from "./router";
 import Router from "./router";

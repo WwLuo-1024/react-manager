@@ -1,7 +1,6 @@
 import { Button, Card, Descriptions } from "antd";
 import React, { FC, useEffect, useState } from "react";
 import styles from "./index.module.less";
-import * as echarts from "echarts";
 import { useUserStore } from "@/store";
 import { formatMoney, formatNum, formatState } from "@/utils";
 import api from "@/api";
