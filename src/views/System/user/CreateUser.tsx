@@ -98,7 +98,7 @@ const CreateUser: FC<IModalProp> = (props: IModalProp) => {
 
   return (
     <Modal
-      title="创建用户"
+      title={action === "create" ? "创建用户" : "编辑用户"}
       width={800}
       open={visable}
       onOk={handleSubmit}

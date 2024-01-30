@@ -54,8 +54,23 @@ export default {
 
   //部门管理
   //部门列表
-  getDeptList(params: Dept.DeptItem) {
+  getDeptList(params?: Dept.DeptItem) {
     console.log(params);
     return request.get<Dept.DeptItem[]>("/dept/list", params);
+  },
+
+  //获取当前账号下的所有用户
+  getAllUserList() {
+    return request.get<User.UserItem[]>("/users/all/list");
+  },
+
+  //创建部门
+  createDept(params: Dept.CreateParams) {
+    return request.post("/dept/create", params);
+  },
+
+  //修改部门
+  editDept(params: Dept.EditParams) {
+    return request.post("/dept/edit", params);
   },
 };
