@@ -29,6 +29,7 @@ export namespace Login {
   }
 }
 
+//用户管理
 export namespace User {
   export interface Params extends PageParams {
     userId?: number;
@@ -65,6 +66,24 @@ export namespace User {
 
   export interface EditParams extends CreateParams {
     userId: number;
+  }
+}
+
+//部门管理
+export namespace Dept {
+  //查询条件
+  export interface Params {
+    deptName?: string;
+  }
+  //数据列表
+  export interface DeptItem {
+    _id: string;
+    createTime: string;
+    updateTime: string;
+    deptName: string;
+    parentId: string;
+    userName: string;
+    children: DeptItem[];
   }
 }
 

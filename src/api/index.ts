@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { Dashboard, Login, ResultData, User } from "@/types/api";
+import { Dashboard, Login, ResultData, User, Dept } from "@/types/api";
 
 export default {
   //Login
@@ -50,5 +50,12 @@ export default {
   //删除用户和批量删除用户
   delUser(params: { userIds: number[] }) {
     return request.post("/users/delete", params);
+  },
+
+  //部门管理
+  //部门列表
+  getDeptList(params: Dept.DeptItem) {
+    console.log(params);
+    return request.get<Dept.DeptItem[]>("/dept/list", params);
   },
 };

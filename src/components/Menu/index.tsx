@@ -29,6 +29,11 @@ const SideMenu: FC = () => {
           key: "3",
           icon: <TeamOutlined />,
         },
+        {
+          label: "部门管理",
+          key: "4",
+          icon: <TeamOutlined />,
+        },
       ],
     },
   ];
