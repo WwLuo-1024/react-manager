@@ -130,6 +130,10 @@ export namespace Menu {
   export interface EditParams extends CreateParams {
     _id: string;
   }
+
+  export interface DelParams {
+    _id: string;
+  }
 }
 
 export namespace Dashboard {

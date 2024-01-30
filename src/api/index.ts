@@ -89,4 +89,14 @@ export default {
   createMenu(params: Menu.CreateParams) {
     return request.post("/menu/create", params);
   },
+
+  //编辑菜单
+  editMenu(params: Menu.EditParams) {
+    return request.post("/menu/edit", params);
+  },
+
+  //删除菜单
+  deleteMenu(params: Menu.DelParams) {
+    return request.post("/menu/delete", params);
+  },
 };

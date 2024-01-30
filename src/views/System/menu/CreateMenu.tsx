@@ -33,7 +33,7 @@ const CreateMenu: FC<IModalProp<Menu.EditParams>> = (
   //打开弹窗 - {parentId: string}意为子集（下属部门）需要传入上级部门id
   const open = (
     type: IAction,
-    data?: Menu.EditParams | { parentId: string }
+    data?: Menu.EditParams | { parentId: string; orderBy: number }
   ) => {
     setAction(type);
     setVisible(true);
@@ -52,9 +52,9 @@ const CreateMenu: FC<IModalProp<Menu.EditParams>> = (
     const valid = await form.validateFields();
     if (valid) {
       if (action === "create") {
-        await api.createDept(form.getFieldsValue());
+        await api.createMenu(form.getFieldsValue());
       } else {
-        await api.editDept(form.getFieldsValue());
+        await api.editMenu(form.getFieldsValue());
       }
 
       message.success("操作成功");
@@ -87,7 +87,7 @@ const CreateMenu: FC<IModalProp<Menu.EditParams>> = (
         <Form.Item hidden name="_id">
           <Input />
         </Form.Item>
-        <Form.Item label="上级部门" name="parentId">
+        <Form.Item label="上级菜单" name="parentId">
           <TreeSelect
             placeholder="请选择父级菜单"
             allowClear
@@ -111,7 +111,7 @@ const CreateMenu: FC<IModalProp<Menu.EditParams>> = (
 
         <Form.Item
           label="菜单名称"
-          name="deptName"
+          name="menuName"
           rules={[{ required: true, message: "请输入菜单名称" }]}
         >
           <Input placeholder="请输入菜单名称" />
@@ -143,7 +143,7 @@ const CreateMenu: FC<IModalProp<Menu.EditParams>> = (
 
         <Form.Item
           label="排序"
-          name="component"
+          name="orderBy"
           tooltip={{ title: "排序值越大越靠后", icon: <InfoCircleOutlined /> }}
         >
           <InputNumber placeholder="请输入排序值" />

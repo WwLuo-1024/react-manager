@@ -1,5 +1,5 @@
 import api from "@/api";
-import { Dept, Menu } from "@/types/api";
+import { Menu } from "@/types/api";
 import {
   Button,
   Form,
@@ -22,7 +22,7 @@ const MenuList: FC = () => {
   const menuRef = useRef<{
     open: (
       type: IAction,
-      data?: Menu.EditParams | { parentId: string }
+      data?: Menu.EditParams | { parentId?: string; orderBy?: number }
     ) => void;
   }>();
 
@@ -43,7 +43,9 @@ const MenuList: FC = () => {
 
   //创建部门
   const handleCreate = () => {
-    menuRef.current?.open("create");
+    menuRef.current?.open("create", {
+      orderBy: data.length,
+    });
   };
 
   const handleSubCreate = (id: string) => {
@@ -59,7 +61,7 @@ const MenuList: FC = () => {
   const handleDelete = (id: string) => {
     Modal.confirm({
       title: "确认",
-      content: "确认删除该部门吗？",
+      content: "确认删除该菜单吗？",
       onOk() {
         handleDelSubmit(id);
       },
@@ -68,7 +70,7 @@ const MenuList: FC = () => {
 
   //删除提交
   const handleDelSubmit = async (_id: string) => {
-    await api.deleteDept({
+    await api.deleteMenu({
       _id,
     });
     message.success("删除成功");
@@ -146,7 +148,12 @@ const MenuList: FC = () => {
 
   return (
     <div>
-      <Form className="search-form" layout="inline" form={form}>
+      <Form
+        className="search-form"
+        layout="inline"
+        form={form}
+        initialValues={{ menuState: 1 }}
+      >
         <Form.Item label="菜单名称" name="menuName">
           <Input placeholder="菜单名称" />
         </Form.Item>
