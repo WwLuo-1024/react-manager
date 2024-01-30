@@ -1,5 +1,5 @@
 import request from "@/utils/request";
-import { Dashboard, Login, ResultData, User, Dept } from "@/types/api";
+import { Dashboard, Login, ResultData, User, Dept, Menu } from "@/types/api";
 
 export default {
   //Login
@@ -77,5 +77,11 @@ export default {
   //删除部门
   deleteDept(params: Dept.DelParams) {
     return request.post("/dept/delete", params);
+  },
+
+  //菜单管理
+  //获取菜单列表
+  getMenuList(params?: Menu.Params) {
+    return request.get<Menu.MenuItem[]>("/menu/list", params);
   },
 };

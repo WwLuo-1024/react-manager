@@ -7,6 +7,7 @@ import Layout from "@/layout";
 import DashBoard from "@/views/Dashboard";
 import UserList from "@/views/System/user";
 import DeptList from "@/views/System/dept";
+import MenuList from "@/views/System/menu";
 
 const routers = [
   {
@@ -36,6 +37,10 @@ const routers = [
       {
         path: "/deptList",
         element: <DeptList />,
+      },
+      {
+        path: "/menuList",
+        element: <MenuList />,
       },
     ],
   },
