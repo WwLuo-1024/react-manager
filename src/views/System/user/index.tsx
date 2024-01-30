@@ -26,7 +26,7 @@ const UserList: FC = () => {
   });
   const [userIds, setUserIds] = useState<number[]>([]);
   const userRef = useRef<{
-    open: (type: IAction, data?: User.UserItem) => void | undefined;
+    open: (type: IAction, data?: User.UserItem) => void;
   }>();
 
   //获取用户列表
@@ -36,7 +36,7 @@ const UserList: FC = () => {
     const data = await api.getUserList({
       ...values,
       pageNum: params.pageNum,
-      pageSize: params.pageSize,
+      pageSize: params.pageSize || pagination.pageSize,
     });
 
     //模拟数据 Mock Data
@@ -49,7 +49,7 @@ const UserList: FC = () => {
     //   });
 
     setData(data.list);
-    setTotal(data.list.length);
+    setTotal(data.page.total);
     setPagination({
       current: data.page.pageNum,
       pageSize: data.page.pageSize,
@@ -66,7 +66,7 @@ const UserList: FC = () => {
   const handleSearch = () => {
     getUserList({
       pageNum: 1,
-      pageSize: pagination.pageSize,
+      // pageSize: pagination.pageSize,
     });
   };
 
@@ -106,7 +106,7 @@ const UserList: FC = () => {
       setUserIds([]);
       getUserList({
         pageNum: 1,
-        pageSize: pagination.pageSize,
+        // pageSize: pagination.pageSize,
       });
     } catch (error) {
       message.error("删除失败");
@@ -287,7 +287,7 @@ const UserList: FC = () => {
         update={() => {
           getUserList({
             pageNum: 1,
-            pageSize: pagination.pageSize,
+            // pageSize: pagination.pageSize,
           });
         }}
       />
