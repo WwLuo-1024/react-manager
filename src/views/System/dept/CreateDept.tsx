@@ -33,6 +33,7 @@ const CreateDept: FC<IModalProp> = (props: IModalProp) => {
   ) => {
     setAction(type);
     setVisible(true);
+    getDeptList();
     if (data) {
       form.setFieldsValue(data);
     }
