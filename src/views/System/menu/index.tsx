@@ -14,14 +14,15 @@ import React, { FC, useEffect, useRef, useState } from "react";
 import { IAction } from "@/types/modal";
 import { ColumnsType } from "antd/es/table";
 import { formatDate } from "@/utils";
+import CreateMenu from "./CreateMenu";
 
 const MenuList: FC = () => {
   const [form] = Form.useForm();
   const [data, setData] = useState<Menu.MenuItem[]>([]);
-  const deptRef = useRef<{
+  const menuRef = useRef<{
     open: (
       type: IAction,
-      data?: Dept.EditParams | { parentId: string }
+      data?: Menu.EditParams | { parentId: string }
     ) => void;
   }>();
 
@@ -42,16 +43,16 @@ const MenuList: FC = () => {
 
   //创建部门
   const handleCreate = () => {
-    deptRef.current?.open("create");
+    menuRef.current?.open("create");
   };
 
   const handleSubCreate = (id: string) => {
-    deptRef.current?.open("create", { parentId: id });
+    menuRef.current?.open("create", { parentId: id });
   };
 
   //编辑部门
   const handleEdit = (record: Menu.MenuItem) => {
-    // deptRef.current?.open("edit", record);
+    menuRef.current?.open("edit", record);
   };
 
   //删除部门
@@ -187,6 +188,7 @@ const MenuList: FC = () => {
           pagination={false}
         />
       </div>
+      <CreateMenu mRef={menuRef} update={getMenuList} />
     </div>
   );
 };

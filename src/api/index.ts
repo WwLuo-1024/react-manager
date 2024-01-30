@@ -84,4 +84,9 @@ export default {
   getMenuList(params?: Menu.Params) {
     return request.get<Menu.MenuItem[]>("/menu/list", params);
   },
+
+  //创建菜单
+  createMenu(params: Menu.CreateParams) {
+    return request.post("/menu/create", params);
+  },
 };
