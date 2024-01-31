@@ -1,4 +1,4 @@
-import { Navigate, useRoutes } from "react-router-dom";
+import { Navigate, createBrowserRouter } from "react-router-dom";
 import Login from "@/views/Login/Login";
 import NotFound from "@/views/ErrorPages/404";
 import Error403 from "@/views/ErrorPages/403";
@@ -8,6 +8,7 @@ import DashBoard from "@/views/Dashboard";
 import UserList from "@/views/System/user";
 import DeptList from "@/views/System/dept";
 import MenuList from "@/views/System/menu";
+import AuthLoader from "./AuthLoader";
 
 const routers = [
   {
@@ -20,7 +21,9 @@ const routers = [
   },
   {
     // path: '/Layout',
+    id: "layout",
     element: <Layout />,
+    loader: AuthLoader, //拦截器 获取权限列表
     children: [
       {
         path: "/welcome",
@@ -58,7 +61,7 @@ const routers = [
   },
 ];
 
-// export default createBrowserRouter(routers);
-export default function Router() {
-  return useRoutes(routers);
-}
+export default createBrowserRouter(routers);
+// export default function Router() {
+//   return useRoutes(routers);
+// }

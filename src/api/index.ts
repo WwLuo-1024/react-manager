@@ -52,6 +52,13 @@ export default {
     return request.post("/users/delete", params);
   },
 
+  //获取权限列表
+  getPermissionList() {
+    return request.get<{ buttonList: string[]; menuList: Menu.MenuItem }>(
+      "/users/getPermissionList"
+    );
+  },
+
   //部门管理
   //部门列表
   getDeptList(params?: Dept.DeptItem) {
