@@ -41,29 +41,37 @@ const MenuList: FC = () => {
     form.resetFields();
   };
 
-  //创建部门
+  //创建菜单
   const handleCreate = () => {
     menuRef.current?.open("create", {
       orderBy: data.length,
     });
   };
 
-  const handleSubCreate = (id: string) => {
-    menuRef.current?.open("create", { parentId: id });
+  const handleSubCreate = (record: Menu.MenuItem) => {
+    menuRef.current?.open("create", {
+      parentId: record._id,
+      orderBy: record.children?.length,
+    });
   };
 
-  //编辑部门
+  //编辑菜单
   const handleEdit = (record: Menu.MenuItem) => {
     menuRef.current?.open("edit", record);
   };
 
-  //删除部门
-  const handleDelete = (id: string) => {
+  //删除菜单
+  const handleDelete = (record: Menu.MenuItem) => {
+    let text = "";
+    if (record.menuType === 1) text = "菜单";
+    if (record.menuType === 3) text = "按钮";
+    if (record.menuType === 2) text = "页面";
+
     Modal.confirm({
       title: "确认",
-      content: "确认删除该菜单吗？",
+      content: `确认删除该${text}吗？`,
       onOk() {
-        handleDelSubmit(id);
+        handleDelSubmit(record._id);
       },
     });
   };
@@ -82,12 +90,13 @@ const MenuList: FC = () => {
       title: "菜单名称",
       dataIndex: "menuName",
       key: "menuName",
+      width: 150,
     },
     {
       title: "菜单图标",
       dataIndex: "icon",
       key: "icon",
-      width: 150,
+      width: 200,
     },
     {
       title: "菜单类型",
@@ -105,6 +114,7 @@ const MenuList: FC = () => {
       title: "权限标识",
       dataIndex: "menuCode",
       key: "menuCode",
+      width: 150,
     },
     {
       title: "路由地址",
@@ -131,13 +141,13 @@ const MenuList: FC = () => {
       render(_, record) {
         return (
           <Space>
-            <Button type="text" onClick={() => handleSubCreate(record._id)}>
+            <Button type="text" onClick={() => handleSubCreate(record)}>
               新增
             </Button>
             <Button type="text" onClick={() => handleEdit(record)}>
               编辑
             </Button>
-            <Button type="text" danger onClick={() => handleDelete(record._id)}>
+            <Button type="text" danger onClick={() => handleDelete(record)}>
               删除
             </Button>
           </Space>
