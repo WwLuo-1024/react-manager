@@ -52,7 +52,7 @@ const SideMenu: FC = () => {
   ) => {
     console.log("menuList:", menuList);
     menuList.forEach((item, index) => {
-      if (item.menuType === 1) {
+      if (item.menuType === 1 && item.menuState === 1) {
         if (item.buttons) {
           return treeList.push(
             getItem(item.menuName, item.path || index, createIcon(item.icon))
