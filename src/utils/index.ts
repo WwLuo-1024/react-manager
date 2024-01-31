@@ -2,6 +2,8 @@
  * Tool Function Encapsulation
  */
 
+import { Menu } from "@/types/api";
+
 export const formatMoney = (num?: number | string) => {
   if (!num) return 0;
   const a = parseFloat(num.toString());
@@ -29,8 +31,20 @@ export const formatDate = (date?: Date | string, rule?: string) => {
   return curDate.toLocaleString().replaceAll("/", "-");
 };
 
+// 用户状态转换
 export const formatState = (state: number) => {
   if (state === 1) return "在职";
   if (state === 2) return "试用期";
   if (state === 3) return "离职";
+};
+
+// 获取页面路径
+export const getMenuPath = (list: Menu.MenuItem[]): string[] => {
+  return list.reduce((result: string[], item: Menu.MenuItem) => {
+    return result.concat(
+      Array.isArray(item.children) && !item.buttons
+        ? getMenuPath(item.children)
+        : item.path + ""
+    );
+  }, []);
 };

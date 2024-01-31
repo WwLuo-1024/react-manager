@@ -54,7 +54,7 @@ export default {
 
   //获取权限列表
   getPermissionList() {
-    return request.get<{ buttonList: string[]; menuList: Menu.MenuItem }>(
+    return request.get<{ buttonList: string[]; menuList: Menu.MenuItem[] }>(
       "/users/getPermissionList"
     );
   },
