@@ -9,6 +9,7 @@ import UserList from "@/views/System/user";
 import DeptList from "@/views/System/dept";
 import MenuList from "@/views/System/menu";
 import AuthLoader from "./AuthLoader";
+import RoleList from "@/views/System/role";
 
 const routers = [
   {
@@ -44,6 +45,10 @@ const routers = [
       {
         path: "/menuList",
         element: <MenuList />,
+      },
+      {
+        path: "/roleList",
+        element: <RoleList />,
       },
     ],
   },

@@ -163,3 +163,24 @@ export namespace Dashboard {
     };
   }
 }
+
+export namespace Role {
+  //如果要使用分页 就需要继承PageParams
+  export interface Params extends PageParams {
+    roleName?: string;
+  }
+
+  export interface CreateParams {
+    roleName: string;
+    remark?: string;
+  }
+
+  export interface RoleItem extends CreateParams {
+    _id: string;
+    permissionList: {
+      checkedKeys: string[];
+    };
+    updateTime: string;
+    createTime: string;
+  }
+}
